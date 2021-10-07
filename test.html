@@ -1,0 +1,568 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" >
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="es-Es" xmlns="http://www.w3.org/1999/xhtml"> <!--<![endif]-->
+<head>
+
+<title>RAMF Logistics</title>
+<meta name="author" content="RAMF" />
+<meta name="description" content="Arquitectos de Trasporte" />
+<meta name="keywords" content="Logistica, embarques, aduana, transporte" />
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<link href="http://localhost:81/ramf/css/jquery-ui.css" rel="stylesheet" type="text/css" /><link href="http://localhost:81/ramf/css/validationEngine.jquery.css" rel="stylesheet" type="text/css" /><link href="http://localhost:81/ramf/css/simplePagination.css" rel="stylesheet" type="text/css" /><link href="http://localhost:81/ramf/css/uploadfile.css" rel="stylesheet" type="text/css" /><link href="http://localhost:81/ramf/css/font-awesome.css" rel="stylesheet" charset="utf-8" media="screen" /><link href="http://localhost:81/ramf/css/sky-forms.css" rel="stylesheet" charset="utf-8" media="screen" /><link href="http://localhost:81/ramf/css/sky-tabs.css" rel="stylesheet" charset="utf-8" media="screen" /><link href="http://localhost:81/ramf/css/sky-forms-blue.css" rel="stylesheet" charset="utf-8" media="screen" /><link href="http://localhost:81/ramf/css/SENNIStyle.css" rel="stylesheet" charset="utf-8" media="screen" /><link href="http://localhost:81/ramf/css/jquery.alerts.css" rel="stylesheet" charset="utf-8" media="screen" /><link href="http://localhost:81/ramf/css/jquery.alerts.css" rel="stylesheet" type="text/css" /><link href="http://localhost:81/ramf/css/sky-mega-menu.css" rel="stylesheet" type="text/css" /><link href="http://localhost:81/ramf/css/multiselect.css" rel="stylesheet" type="text/css" /><link href="http://localhost:81/ramf/css/datatable/jquery.dataTables.min.css" rel="stylesheet" type="text/css" /><link href="http://localhost:81/ramf/css/datatable/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://localhost:81/ramf/js/jquery-1-8-2.js"></script>
+<!--
+<script type="text/javascript" src="http://localhost:81/ramf/js/datatable/jquery-1.12.4.js"></script>
+-->
+<script type="text/javascript" src="http://localhost:81/ramf/js/jQueryUI_v1_11_4.js"></script>
+<script type="text/javascript" src="http://localhost:81/ramf/js/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="http://localhost:81/ramf/js/jquery.validationEngine-esp.js"></script>
+<script type="text/javascript" src="http://localhost:81/ramf/js/utilsYAjax.js"></script>
+<script type="text/javascript" src="http://localhost:81/ramf/js/jquery.simplePagination.js"></script>
+
+<!-- upload -->
+<script type="text/javascript" src="http://localhost:81/ramf/js/jquery.uploadfile.js"></script>
+
+<script type="text/javascript" src="http://localhost:81/ramf/js/jquery.modal.js"></script>
+<!-- RichText tinymce -->
+<script type="text/javascript" src="http://localhost:81/ramf/js/tinymce/tinymce.min.js"></script>
+
+<!-- Mask Input Jquery -->
+<script type="text/javascript" src="http://localhost:81/ramf/js/jquery.maskedinput.min.js"></script>
+
+<!-- JAlert Jquery -->
+<script type="text/javascript" src="http://localhost:81/ramf/js/jquery.alerts.js"></script>
+
+<!-- NOTIFICACIONES -->
+<script type="text/javascript" src="http://localhost:81/ramf/js/ttw-notification-menu.js"></script>
+
+<!-- Number Jquery -->
+<script type="text/javascript" src="http://localhost:81/ramf/js/jquery.number.js"></script>
+<!-- MaskMoney Jquery -->
+<script type="text/javascript" src="http://localhost:81/ramf/js/jquery.maskMoney.js"></script>
+
+<!-- highchartsV5 -->
+<script type="text/javascript" src="http://localhost:81/ramf/js/code/highcharts.js"></script>
+<script type="text/javascript" src="http://localhost:81/ramf/js/code/highcharts-3d.js"></script>
+<script type="text/javascript" src="http://localhost:81/ramf/js/code/modules/exporting.js"></script>
+
+<!-- Timbrar Multiselect -->
+<script type="text/javascript" src="http://localhost:81/ramf/js/jquery.multi-select.js"></script>
+
+<!-- dataTables -->
+<script type="text/javascript" src="http://localhost:81/ramf/js/datatable/jquery.dataTables.js"></script>
+<script type="text/javascript" src="http://localhost:81/ramf/js/datatable/dataTables.responsive.js"></script>
+
+</head>
+
+
+<body class="bg-orange">
+
+    <input type="hidden" name="companyName" value="RAMF" id="companyName"  /><input type="hidden" name="correoDominio" value="@ramf-log.com.mx" id="correoDominio"  />    
+<div id="s4-workspace" class="ms-core-overlay" >
+<div id="s4-bodyContainer">
+    <div class="container">          
+        <header class="clearfix noindex">
+         <!-- mega menu -->
+        <ul class="sky-mega-menu sky-mega-menu-anim-scale sky-mega-menu-response-to-icons">         
+        <li>
+           <img src="http://localhost:81/ramf/images/Logo.jpg" width="80px" height="45px" />
+        </li>
+        <li>
+            <a href="http://localhost:81/ramf/gestion/portal/"><i class="fa fa-single fa-home"></i></a>
+        </li>
+        				
+        <li aria-haspopup="true">
+            <a href="#"><i class="fa fa-cogs"></i>Gesti&oacute;n</a>
+            <div class="grid-container3">
+                    <ul>
+                            <li><a href="http://localhost:81/ramf/gestion/consultaclientes/"><i class="fa fa-suitcase"></i>Clientes</a></li>
+                            <li><a href="http://localhost:81/ramf/gestion/facturacion/"><i class="fa fa-files-o"></i>Facturas</a></li>
+                            <li><a href="http://localhost:81/ramf/proveedor/"><i class="fa fa-male"></i>Proveedores</a></a></li>
+                            <li><a href="http://localhost:81/ramf/cotizador/"><i class="fa fa-file-pdf-o"></i>Cotizaciones</a></a></li>
+                            <li><a href="http://localhost:81/ramf/usuario/"><i class="fa fa-users"></i>Usuarios</a></a></li>
+                            <li><a href="http://localhost:81/ramf/gestion/plantillas/"><i class="fa fa-file-powerpoint-o"></i>Plantillas</a></a></li>
+                    </ul>
+            </div>
+        </li>
+        <li aria-haspopup="true">
+            <a href="http://localhost:81/ramf/pedido/consulta/"><i class="fa fa-truck"></i>Embarques</a>
+            <div class="grid-container3">
+                <ul>
+                    <li><a href="http://localhost:81/ramf/pedido/nuevo/"><i class="fa fa-plus-circle"></i>Nuevo Embarque</a></li>
+                    <li><a href="http://localhost:81/ramf/pedido/consulta/"><i class="fa fa-bookmark"></i>Consultar Embarque</a></li>							
+                </ul>
+            </div>
+        </li>				
+        <li>
+            <a href="http://localhost:81/ramf/retro/consultar/"><i class="fa fa-newspaper-o"></i>Encuestas S.</a>
+        </li>
+        <li>
+            <a href="http://localhost:81/ramf/bi/"><i class="fa fa-pie-chart"></i>Reportes</a>
+        </li> 
+        <li class="right">
+            <img src="http://localhost:81/ramf/images/user.png"/>&nbsp;&nbsp;Alejandro Muñoz Siller&nbsp;&nbsp;        </li>       				
+        <li class="right">
+            <a href="http://localhost:81/ramf/gestion/salir/"> <img src="http://localhost:81/ramf/images/salir.png"/> Salir </a> 
+        </li>
+    </ul><!--/ mega menu -->       
+    <br>
+</header>
+<!-- End header -->  
+                                            
+                                            
+                    
+<script type="text/javascript">
+
+var href            = 'http://localhost:81/ramf/';
+var registrosPagina = '10';
+var controlador     = 'gestion';
+var numColGrid      = '6';
+
+
+$(document).ready(function() {   
+	
+    // paginarAX(controlador,numColGrid,1,registrosPagina,href);
+    
+    $("#fechaIni").datepicker({dateFormat: 'yy-mm-dd'});        
+    $("#fechaFin").datepicker({dateFormat: 'yy-mm-dd'});   
+    $("input[value=FT]").attr('checked',true);
+    $("#titFac"     ).hide();
+    $("#grid"       ).hide();
+    $("#confirmDown").hide();
+    $("#iconDown"   ).html('');
+    
+    $("#togfiltrosForm").click(function(){ toggFiltrosFac(); });
+    $("#togfiltrosForm").addClass("pointer");
+
+    $( "#modalFac").dialog({ autoOpen: false,
+                             height  : 650,
+                             width   : 950,
+                             modal   : true,
+                             buttons : { "Vista Previa" : vistaPreviaFacturaAX,
+                                         "Timbrar"      : salvarAntesTimbrar,
+                                         Cancel         : function() { $( this ).dialog( "close" ); }
+                                       },
+                             close   : function() {  }
+                          });    
+    $("#tabsTimbrado").tabs()
+                      .on("click", '[role="tab"]', function() { var tab     = $(this).find("a");
+                                                                var botones = $(".ui-dialog-buttonset").children();
+                                                                if($(tab).attr('href') == "#tabs-5")
+                                                                {
+                                                                    $(botones).first().hide();
+                                                                    $(botones).first().next().hide()                                                                        
+                                                                }
+                                                                else
+                                                                {
+                                                                    if( $("#facturaTimbrada").val() == "0" )
+                                                                    {
+                                                                        $(botones).first().show();
+                                                                        $(botones).first().next().show();
+                                                                    }
+                                                                }
+                                                              });
+                
+} );
+	
+</script>   
+
+
+<form action="http://localhost:81/ramf/gestion/paginarAX/" method="post" accept-charset="utf8" class="formular sky-form" id="filtrosCl"><fieldset><legend id="togfiltrosForm">[<i class="fa fa-plus" id="imgfiltrosForm"> </i>] Filtros de Busqueda </legend><div id="filtrosForm"><div class="row">                          
+                                        <section class="col col-4">
+                                              <label class="label">Referencia RAMF Logistics</label>
+                                              <label class="input"><i class="icon-append fa fa-search"></i><input type="text" name="f1" value="" class="validate[custom[onlyLetterNumber]] text-input" id="f1" size="15" maxlength="30"  />
+                                               <b class="tooltip tooltip-bottom-right">Parametro de Búsqueda</b>
+                                              </label>
+                                          </section>
+                                          <section class="col col-3">
+                                              <label class="label">RFC</label>
+                                              <label class="input"><i class="icon-append fa fa-search"></i><input type="text" name="f2" value="" class="validate[custom[onlyLetterNumber]] text-input" id="f2" size="15" maxlength="30"  />
+                                               <b class="tooltip tooltip-bottom-right">Parametro de Búsqueda</b>
+                                              </label>
+                                          </section>
+                                           <section class="col col-3">
+                                              <label class="label">Razón Social</label>
+                                              <label class="input"><i class="icon-append fa fa-search"></i><input type="text" name="f3" value="" class="validate[custom[onlyLetterNumber]] text-input" id="f3" size="15" maxlength="40"  />
+                                               <b class="tooltip tooltip-bottom-right">Parametro de Búsqueda</b>
+                                              </label>
+                                          </section>
+										  <section class="col col-2">    
+											</section></div><div class="row">  
+											<section class="col col-4">													
+													<label class="label">Tipo: </label>
+														<input type="radio" name="f4" value="FT" id="f4"  />&nbsp;<i class='fa fa-file-pdf-o'></i>&nbsp;Facturas timbradas<br /><input type="radio" name="f4" value="FSI" id="f4"  />&nbsp;<i class='fa fa-usd'></i>&nbsp;Facturas con saldo insoluto<br /><input type="radio" name="f4" value="FE" id="f4"  />&nbsp;<i class='fa fa-truck'></i>&nbsp;Facturar un Embarque<br />		</section>											       
+											<section class="col col-3">
+													<label class="label">De: </label>
+													<label class="input"><i class="icon-append fa fa-search"></i><input type="text" name="fechaIni" value="" class="text-input datepicker" id="fechaIni" size="8" maxlength="20"  />
+													<b class="tooltip tooltip-bottom-right">Parametro de Búsqueda tipo calendario</b>
+													</label>
+											</section>
+											<section class="col col-3">
+													<label class="label">Hasta: </label>
+													<label class="input"><i class="icon-append fa fa-search"></i><input type="text" name="fechaFin" value="" class="text-input datepicker" id="fechaFin" size="8" maxlength="20"  />
+													<b class="tooltip tooltip-bottom-right">Parametro de Búsqueda tipo calendario</b>
+													</label>
+											</section>	
+											<section class="col col-2">    
+											</section>										         
+											</div>
+											<div class="row">
+										<section class="col col-2">&nbsp;</section>  <section class="col col-4">		<a class="button color" href="javascript:submitFormFiltrosFacturas('filtrosCl','10','http://localhost:81/ramf/');"><span>Buscar</span></a> </secton>									     
+									  	 <section class="col col-4">		<a class="button color" href="javascript:submitFormReset('filtrosCl')"><span>Limpiar</span></a>  </secton>
+										 <section class="col col-2">&nbsp;</section>
+									   </div></div></fieldset></form><br /><div class="row">
+            <section class="col col-1"></section>
+            <section id="titFac" class="col col-5"><center><header id="titReportes">Facturas </header></center></section>
+            <section id="iconDown" class="col col-5"></section>
+            <section class="col col-1"></section>
+          </div><br /><br /><div class="row">
+          <section class="col col-11">
+              <table id="grid" class="display compact nowrap" style="width:100%">
+                <thead>
+                <tr>
+                <th></th><th>RFC</th><th>Raz&oacute;n Social</th><th>Monto</th><th>Fecha Factura</th><th>Acciones</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                <td> </td></tr>
+                </tbody>
+                </table><br />
+                <div id="linksPaginar"></div><span id="spinPaginar"></span>
+        </section>
+        </div><br />
+        
+        <div class="row">
+            <section class="col col-11">
+        <div id="confirmDown" title="RAMF LOGISTICS"> <span id="confirmDownHeader"></span><br><span id="confirmDownContent"></span> </div><input type="hidden" name="baseURL" value="http://localhost:81/ramf/" id="baseURL"  /><input type="hidden" name="id_pedido" value="" id="id_pedido"  /><input type="hidden" name="accion" value="E" id="accion"  /><input type="hidden" name="IVA_POR" value=".16" id="IVA_POR"  /><input type="hidden" name="facturaTimbrada" value="0" id="facturaTimbrada"  />
+        
+        <div id="modalFac" title="MODAL"> <form action="http://localhost:81/ramf/pedido/timbrar/" method="post" accept-charset="utf8" id="CFDI_FORM"><input type="hidden" name="uuid" value="" id="uuid"  />  <div class="row"> 
+        <section class="col col-6" id="confirmtimbrar">&nbsp;</section> <section class="col col-6"><span id="vistapreviaPDF"></span><span id="timbrarPDF"></span></section></div>      
+        <div id="tabsTimbrado">
+        <ul>
+            <li><a href="#tabs-1">Emisor</a></li>
+            <li><a href="#tabs-2">Receptor</a></li>
+            <li><a href="#tabs-3">Conceptos</a></li>
+            <li><a href="#tabs-4">Info Pago</a></li>
+            <li><a href="#tabs-5">Complementos de Pago REP</a></li>
+          <!--  <li><a href="#tabs-6">Cancelación</a></li> -->
+        </ul>
+        <div id="tabs-1"> 
+            <table style="width:100%">            
+            <tr>
+                <td width="40%" style="text-align:right">RFC: </td>
+                <td width="60%"><input type="text" name="rfcEmisor" value="" class="timb text-input " size="12" id="rfcEmisor" disabled="disabled" maxlength="40"  />
+               </td>                
+            </tr>
+            <tr>
+                <td width="40%" style="text-align:right">Razón Social: </td>
+                <td width="60%"><input type="text" name="rsEmisor" value="" class="timb text-input " size="25" id="rsEmisor" disabled="disabled" maxlength="40"  />
+               </td>                
+            </tr>
+            <tr>
+                <td width="40%" style="text-align:right">Código Postal (Expedición): </td>
+                <td width="60%"><input type="text" name="cpEmisor" value="" class="timb onlyNumber " size="25" id="cpEmisor" disabled="disabled" maxlength="8"  />
+               </td>                
+            </tr>
+            <tr>
+                <td width="40%" style="text-align:right">Correo: </td>
+                <td width="60%"><input type="text" name="emailEmisor" value="" class="timb text-input " size="25" id="emailEmisor" disabled="disabled" maxlength="80"  />
+               </td>                
+            </tr> 
+            <tr>
+                <td width="40%" style="text-align:right">Regimen Fiscal: </td>
+                <td width="60%"><select name="regimen_fiscal" id='regimen_fiscal' >
+<option value="0">::Elegir::</option>
+<option value="601" selected="selected">General de Ley Personas Morales</option>
+<option value="603">Personas Morales con Fines no Lucrativos</option>
+<option value="609">Consolidación</option>
+<option value="610">Residentes en el Extranjero sin Establecimiento Permanente en México</option>
+<option value="620">Sociedades Cooperativas de Producción que optan por diferir sus ingresos</option>
+<option value="622">Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras</option>
+<option value="623">Opcional para Grupos de Sociedades</option>
+<option value="624">Coordinados</option>
+<option value="628">Hidrocarburos</option>
+<option value="607">Régimen de Enajenación o Adquisición de Bienes</option>
+</select>
+                </td>                
+            </tr>
+            </table><br /><br />            
+            <legend id="togdomFiscalEmisor" class="pointer">[<i class="fa fa-plus" id="imgdomFiscalEmisor"> </i>] Domicilio Fiscal (opcional)</legend><br>
+			<div id="domFiscalEmisor"> <p id="labelDomFis"></p>  </div>
+        </div>
+        <div id="tabs-2">
+            <table style="width:100%">            
+            <tr>
+                <td width="40%" style="text-align:right">RFC: </td>
+                <td width="60%"><input type="text" name="rfcReceptor" value="" class="timb text-input " size="12" id="rfcReceptor" maxlength="20"  />
+                </td>                
+            </tr>
+            <tr>
+                <td width="40%" style="text-align:right">Razón Social: </td>
+                <td width="60%"><input type="text" name="rsReceptor" value="" class="timb text-input " size="25" id="rsReceptor" maxlength="80"  />
+                </td>                
+            </tr>
+            <tr>
+                <td width="40%" style="text-align:right">Código Postal (Dom. Fiscal): </td>
+                <td width="60%"><input type="text" name="cpReceptor" value="" class="timb onlyNumber " size="25" id="cpReceptor" maxlength="8"  />
+               </td>                
+            </tr>
+            <tr>
+                <td width="40%" style="text-align:right">Correo: </td>
+                <td width="60%"><input type="text" name="emailReceptor" value="" class="timb text-input " size="25" id="emailReceptor" maxlength="80"  />
+                </td>                
+            </tr>
+            <tr>
+                <td width="40%" style="text-align:right">Uso de CFDI: </td>
+                <td width="60%"><select name="uso_cfdi" id='uso_cfdi' >
+<option value="0">::Elegir::</option>
+<option value="G01">Adquisición de mercancias</option>
+<option value="G02">Devoluciones, descuentos o bonificaciones</option>
+<option value="G03">Gastos en general</option>
+<option value="I01">Construcciones</option>
+<option value="I02">Mobilario y equipo de oficina por inversiones</option>
+<option value="I03">Equipo de transporte</option>
+<option value="I04">Equipo de computo y accesorios</option>
+<option value="I05">Dados, troqueles, moldes, matrices y herramental</option>
+<option value="I06">Comunicaciones telefónicas</option>
+<option value="I07">Comunicaciones satelitales</option>
+<option value="I08">Otra maquinaria y equipo</option>
+<option value="P01">Por definir</option>
+</select>
+                </td>                
+            </tr>
+            </table><br /><br />
+            <legend id="togdomFiscalReceptor" class="pointer">[<i class="fa fa-plus" id="imgdomFiscalReceptor"> </i>] Domicilio Fiscal (opcional)</legend><br>
+			<div id="domFiscalReceptor"> <p id="labelDomFisReceptor"></p>  </div>
+        </div>
+        <div id="tabs-3">            
+            <table style="width:100%">
+            <tr class="noConcepts">
+                <td width="30%"> <label for="conceptosSinCodSATlbl">1) Prod./Serv. cotizados: </label><br>
+                                 <select id="conceptosSinCodSAT" name="conceptosSinCodSAT" multiple></select>
+                </td>
+                <td width="35%"><div class="ui-widget">
+                                    <label for="cveProdSATlbl">2) Claves Prod./Serv. SAT: </label><br>
+                                    <input id="cveProdSAT">
+                                    <br /><label for="cveProdSATNot"><small>Ingrese al menos 3 caracteres para buscar</small></label>                                           
+                                </div>
+                </td>
+                <td width="35%"> <div class="ui-widget">
+                                    <label for="clave_unidadSATlbl">3) Claves Unidad Medida SAT: </label><br>
+                                    <input id="clave_unidadSAT">
+                                    <br /><label for="clave_unidadSATNot"><small>Ingrese al menos 3 caracteres para buscar</small></label>                                           
+                                </div>                
+                </td>
+            </tr>
+            <tr class="noConcepts">
+                <td width="100%" colspan="4" style="text-align:center"><br /><a class="button" id="buttonAsigCodSat">4) Agregar concepto Factura SAT</a> </td> 
+            </tr>            
+            <tr>
+                <td width="100%" colspan="4"><br /><input type="hidden" name="numConceptosConCveSAT" value="0" id="numConceptosConCveSAT"  />
+                                              <table id="tblConceptosSAT" style="width:100%; border-collapse: collapse; border: 1px solid black;">
+                                                 <tr><td width="100%" colspan="6" style="text-align:center"> <strong>No hay conceptos asignados para facturar</strong> </td></tr>
+                                              </table>
+                                              <br />
+                </td>
+            </tr>
+            </table>
+            <table style="width:100%">
+            <tr>
+                <td width="15%"><strong>SubTotal</strong> </td>
+                <td width="35%"><span id="subtotalSATLbl"></span><input type="hidden" name="subtotalSAT" value="0" id="subtotalSAT"  /> </td>
+                <td width="15%"> </td>
+                <td width="35%" colspan="2"> </td>
+            </tr>
+            <tr>
+                <td width="15%">Descuento </td>
+                <td width="35%"><input type="text" name="descuentoSAT" value="0.0" class="onlyNumber" size="2" id="descuentoSAT" maxlength="5"  /> %</td>
+                <td width="15%">IVA </td>
+                <td width="35%" colspan="2"><span id="ivaSATLbl"></span><input type="hidden" name="ivaSAT" value="0" id="ivaSAT"  /> </td>
+            </tr>
+            <tr>
+                <td width="15%">Moneda de la Factura </td>
+                <td width="35%"><select name="monedaSAT" id='monedaSAT' >
+<option value="0">::Elegir::</option>
+<option value="MXN" selected="selected">Peso Mexicano</option>
+<option value="USD">Dolar americano</option>
+</select> </td>
+                <td width="15%">Tipo de Cambio </td>
+                <td width="20%">$<input type="text" name="tcSAT" value="" class="onlyNumber" size="5" id="tcSAT" maxlength="7"  />MXN </td>
+                <td width="15%"><input type="checkbox" name="convertirAlTC" id="convertirAlTC" value="1"> <small>Convertir al Tipo de Cambio</small></td>
+            </tr>
+            <tr>
+                <td width="15%"><strong>Total</strong> </td>
+                <td width="35%"><span id="totalSATLbl"></span><input type="hidden" name="totalSAT" value="0" id="totalSAT"  /> </td>
+                <td width="15%"> </td>
+                <td width="35%" colspan="2"> </td>
+            </tr>
+            </table>
+        </div>
+        <div id="tabs-4">
+            <table style="width:100%">  
+                <tr>
+                    <td width="20%" style="text-align:right">Método de Pago: </td>
+                    <td width="30%"><select name="metodo_pago" id='metodo_pago' >
+<option value="0" selected="selected">::Elegir::</option>
+<option value="PUE">Pago en una sola exhibición
+</option>
+<option value="PPD">Pago en parcialidades o diferido
+</option>
+</select><br /><br /> </td>
+                    <td width="20%" style="text-align:right">Forma de Pago: </td>
+                    <td width="30%"><select name="forma_pago" id='forma_pago' >
+<option value="0" selected="selected">::Elegir::</option>
+<option value="01">Efectivo</option>
+<option value="02">Cheque nominativo</option>
+<option value="03">Transferencia electrónica de fondos</option>
+<option value="04">Tarjeta de crédito</option>
+<option value="05">Monedero electrónico</option>
+<option value="06">Dinero electrónico</option>
+<option value="08">Vales de despensa</option>
+<option value="12">Dación en pago</option>
+<option value="13">Pago por subrogación</option>
+<option value="14">Pago por consignación</option>
+<option value="15">Condonación</option>
+<option value="17">Compensación</option>
+<option value="23">Novación</option>
+<option value="24">Confusión</option>
+<option value="25">Remisión de deuda</option>
+<option value="26">Prescripción o caducidad</option>
+<option value="27">A satisfacción del acreedor</option>
+<option value="28">Tarjeta de débito</option>
+<option value="29">Tarjeta de servicios</option>
+<option value="99">Por definir</option>
+<option value="30">Aplicación de anticipos</option>
+</select><br /><br /></td>
+                </tr>
+                <tr>
+                    <td width="20%" style="text-align:right">Notas: </td>
+                    <td width="80%" colspan="3"><textarea name="notasFactura" cols="5" rows="2" id="notasFactura" style="width:100%" maxlength="80" ></textarea><br /><br /> </td>
+                </tr>    
+                <tr>
+                <td width="20%" style="text-align:right">Fecha de Expedición: </td>
+                <td width="80%" colspan="3"><input type="text" name="fecha_expedicion" value="12/05/2021" class="datepicker" id="fecha_expedicion" maxlength="11"  /><br /><br /> </td>
+            </tr>    
+            </table>              
+        </div>
+         <div id="tabs-5">
+            <span id="confirmvp_rep">&nbsp;</span>
+            <span id="confirmtimbrar_rep">&nbsp;</span>
+            <table cellspacing="0" align="center" cellpadding="0" style="width:100%">  
+            <tr>
+                <td width="20%" style="text-align:right"><strong>SALDO FACTURA:</strong> </td>
+                <td width="25%" style="text-align:left">&nbsp;<strong><span id="saldoFactura"> </strong></span> </td>                
+                <td width="30%" style="text-align:right"><strong>SALDO INSOLUTO FACTURA: </strong></td>
+                <td width="25%" style="text-align:left">&nbsp;<strong><span id="saldoInsoluto"> </span></strong><br>&nbsp;<small><small><span id="diasFactura"> </span></small></small><input type="hidden" name="saldoInsolutoFac" value="0" id="saldoInsolutoFac"  /><input type="hidden" name="saldoInsolutoFacIni" value="0" id="saldoInsolutoFacIni"  /></td>
+            </tr>
+            </table>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <table cellspacing="0" align="center" cellpadding="0" style="width:100%"> 
+            <tr>                
+                <td width="17%" style="text-align:right"><small>Moneda REP: </small></td>
+                <td width="20%" ><select name="moneda_rep" id='moneda_rep' >
+<option value="0">::Elegir::</option>
+<option value="MXN" selected="selected">Peso Mexicano</option>
+<option value="USD">Dolar americano</option>
+</select> </td>
+                <td width="21%" style="text-align:right"><small>Tipo cambio REP: </small></td>
+                <td width="20%" >$<input type="text" name="tc_rep" value="" class="onlyNumber" size="5" id="tc_rep" maxlength="7"  />MXN </td>
+                <td width="12%" style="text-align:right"><small>Monto REP: </small></td>
+                <td width="16%" ><input type="text" name="monto_rep" value="" class="onlyNumber montoRep" id="monto_rep" size="6" maxlength="11"  /> </td>
+            </tr>              
+            <tr>
+                <td width="17%" style="text-align:right"><small>Forma de Pago REP: </small></td>
+                <td width="20%" ><select name="forma_pago_rep" id='forma_pago_rep' >
+<option value="0" selected="selected">::Elegir::</option>
+<option value="01">Efectivo</option>
+<option value="02">Cheque nominativo</option>
+<option value="03">Transferencia electrónica de fondos</option>
+<option value="04">Tarjeta de crédito</option>
+<option value="05">Monedero electrónico</option>
+<option value="06">Dinero electrónico</option>
+<option value="08">Vales de despensa</option>
+<option value="12">Dación en pago</option>
+<option value="13">Pago por subrogación</option>
+<option value="14">Pago por consignación</option>
+<option value="15">Condonación</option>
+<option value="17">Compensación</option>
+<option value="23">Novación</option>
+<option value="24">Confusión</option>
+<option value="25">Remisión de deuda</option>
+<option value="26">Prescripción o caducidad</option>
+<option value="27">A satisfacción del acreedor</option>
+<option value="28">Tarjeta de débito</option>
+<option value="29">Tarjeta de servicios</option>
+<option value="99">Por definir</option>
+<option value="30">Aplicación de anticipos</option>
+</select> </td>
+                <td width="21%" style="text-align:right"><small>Fecha Pago: </small></td>
+                <td width="20%" ><input type="text" name="fecha_rep" value="12/05/2021" class="datepicker" id="fecha_rep" size="8" maxlength="11"  /> </td>                
+                <td width="12%" style="text-align:right"><small>Num. Parcialidad:</small> </td>
+                <td width="16%" ><input type="text" name="parcial_rep" value="1" class="onlyNumber" id="parcial_rep" size="4" maxlength="2"  /> </td>
+            </tr>    
+            </table>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <i class="fa fa-arrow-circle-right fa-lg togDatBan" > <small>Datos Bancarios (Opcionales)</small> </i> 
+            <table cellspacing="0" id="tblDatBan" align="center" cellpadding="0" style="width:100%"> 
+            <tr>
+                <td width="16%" style="text-align:right"><small>Número de Operacion:</small> </td>
+                <td width="16%" ><input type="text" name="NumOperacion" value="" class="onlyNumber" id="NumOperacion" size="5" maxlength="15"  /> </td>
+                <td width="16%" style="text-align:right"><small>Banco Ordenante: </small></td>
+                <td width="16%" ><input type="text" name="RfcEmisorCtaOrd" value="" id="RfcEmisorCtaOrd" size="8" maxlength="30"  /> </td>                
+                <td width="16%" style="text-align:right"><small>Cuenta Bancaria Ordenante: </small></td>
+                <td width="16%" ><input type="text" name="CtaOrdenante" value="" id="CtaOrdenante" size="6" maxlength="20"  /> </td>
+            </tr>  
+             <tr>
+                <td width="16%" style="text-align:right"></td>
+                <td width="16%" > </td>
+                <td width="16%" style="text-align:right"><small>Banco Beneficiario: </small></td>
+                <td width="16%" ><input type="text" name="RfcEmisorCtaBen" value="" id="RfcEmisorCtaBen" size="8" maxlength="30"  /> </td>                
+                <td width="16%" style="text-align:right"><small>Cuenta Bancaria Beneficiaria: </small></td>
+                <td width="16%" ><input type="text" name="CtaBeneficiario" value="" id="CtaBeneficiario" size="6" maxlength="20"  /> </td>
+            </tr>    
+            </table>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <table cellspacing="0" align="center" cellpadding="0" style="width:100%">  
+            <tr><td width="20%" > <i class="fa fa-arrow-circle-right fa-lg togPagReg" > <small>Pagos Registrados</small> </i> </td>
+                <td width="20%" > <span id="timbrar_repPDF"> </span></td>
+                <td width="20%" > <span id="vp_repPDF"> </span> </td>
+                <td width="20%" > <a href="javascript:vistaPreviaAX('vp_rep');" class="button button-secondary">Vista previa REP</a> </td>
+                <td width="20%" > <a href="javascript:timbrarREPAX();" class="button button-secondary">Timbrar REP</a> </td>
+            </tr>    
+            </table>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <table id="tblREPs" cellspacing="0" align="center" cellpadding="0" style="width:100%">  
+                <tr><td width="10%">  </td>
+                    <td width="45%">  </td>
+                    <td width="45%">  </td>
+                </tr>    
+            </table> 
+        </div>
+        <!--
+        <div id="tabs-6">
+            <p>Cancelaciones</p>
+        </div>
+        -->
+    </form></div>
+</section>
+</div>
+ <!-- FOOTER -->
+    <footer class="noindex">
+    <ul>
+        <li style="color: white">Derechos Reservados © 2021</li>
+        <li style="color: white">Power by Convivere</li>
+        <li style="color: white"></li>
+    </ul>
+
+    </footer>
+    <!-- End footer -->             
+    <!-- closes container -->
+</div>
+</div>        
+</div>                    
+
+</body></html> 
