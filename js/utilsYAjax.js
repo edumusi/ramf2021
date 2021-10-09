@@ -4216,10 +4216,11 @@ function openModalTimbrarAX(baseURL, id_pedido, rfc)
 														+"</tr>" );
 								  let adjunto  = value["adjunto"];
 								  let filaname = value["filename"]; 
+								  let xmlFilename = isEmpty(filaname) == true?"":filaname.replace(".pdf", "_cfdi3_3.xml")
 
 								  iconF += "<a href='"+$("#baseURL").val()+value["adjunto"]+"' target='_blank'> <img title='"+value["desc_adjunto"]+"' src='"+$("#baseURL").val()+"images/logoPDF.png' width='18px' height='18px'> <small>"+value["filename"]+"</small>"
 								  		+  "</a>&nbsp;&nbsp;"
-										+  "<a href='"+$("#baseURL").val()+(adjunto.replace(".pdf", "_cfdi3_3.xml"))+"' target='_blank'> <img title='"+(adjunto.replace(".pdf", "_cfdi3_3.xml"))+"' src='"+$("#baseURL").val()+"images/logoXML.png' width='18px' height='18px'> <small>"+(filaname.replace(".pdf", "_cfdi3_3.xml"))+"</small>"
+										+  "<a href='"+$("#baseURL").val()+(adjunto.replace(".pdf", "_cfdi3_3.xml"))+"' target='_blank'> <img title='"+(adjunto.replace(".pdf", "_cfdi3_3.xml"))+"' src='"+$("#baseURL").val()+"images/logoXML.png' width='18px' height='18px'> <small>"+(xmlFilename)+"</small>"
 								  		+  "</a>&nbsp;&nbsp;"
 										; 
 								}); 
@@ -4675,7 +4676,7 @@ function timbrarAX()
 									;						
 						$("#timbrarPDF").append(iconF);
 						limpiaConceptosFac();
-						scrollToAnchor("timbrarPDF");
+						scrollToAnchor("timbrarPDF"); 
 
 						$('#tblRepFact').append("<tr> <td> <input type='radio' class='selFac' id='f"+resp['id_factura']+"' name='facturaPedido' value='"+resp['id_factura']+"'></td>"
 											+"<td align='left'><a href='"+$("#baseURL").val()+resp["success"]["pdf"]+"' target='_blank'><small>"+resp['filename']+"</small></a></td>"
@@ -5186,7 +5187,7 @@ function timbrarREPAX()
 						   jAlert("NO FUE POSIBLE TIMBRAR LA FACTURA ANTE EL SAT, FAVOR DE REVISAR LO SIGUIENTE: " + msjError, titAlert);
 						}
 						else
-						{ 
+						{  
 							$("#timbrar_repPDF").html("");
 							$("#vp_repPDF"	   ).html("");						
 							$("#tblREPs"	   ).show();  

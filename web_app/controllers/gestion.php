@@ -986,8 +986,8 @@ public function rnomina($msj='')
 		$datos['factura']['descuento'] 		  = $descuentoRN ;//'3000';
 		$datos['factura']['fecha_expedicion'] = date('Y-m-d\TH:i:s', time() - 120);
 		$datos['factura']['folio'] 			  = $datos['id_recibo'];
-		$datos['factura']['forma_pago'] 	  = '99';
-		$datos['factura']['LugarExpedicion']  = $this->input->post('cve_entidad_emp');
+		$datos['factura']['forma_pago'] 	  = '99';		
+		$datos['factura']['LugarExpedicion']  = $dbFiscal['cp_fiscal'];//'77712'; 		
 		$datos['factura']['metodo_pago'] 	  = 'PUE';
 		$datos['factura']['moneda'] 		  = 'MXN';
 		$datos['factura']['serie'] 			  = ($portal == NULL ? SERIE_SAT : SERIE_SAT_SENNI);//'A';
@@ -1017,9 +1017,9 @@ public function rnomina($msj='')
 		$datos['conceptos'][0]['ClaveUnidad'] 	= 'ACT';
 		$datos['conceptos'][0]['Descuento'] 	= $descuentoRN;//'3000';
 		
-		// Obligatorios
+		// Obligatorios 
 		$datos['nomina12']['TipoNomina'] 	   = $this->input->post('TipoNomina');//''O';
-		$datos['nomina12']['FechaPago'] 	   = $this->fechaSAT( $this->input->post('FechaPago'), 'si' ) ;//'2016-10-31';
+		$datos['nomina12']['FechaPago'] 	   = $this->fechaSAT( $this->input->post('FechaPago'), NULL  ) ;//'2016-10-31';
 		$datos['nomina12']['FechaInicialPago'] = $this->fechaSAT( $this->input->post('FechaInicialPago'), NULL ) ;//'2016-10-16';
 		$datos['nomina12']['FechaFinalPago']   = $this->fechaSAT( $this->input->post('FechaFinalPago'), NULL ) ;//'2016-10-31';
 		$datos['nomina12']['NumDiasPagados']   = $this->input->post('NumDiasPagados');//''15';
@@ -1033,7 +1033,7 @@ public function rnomina($msj='')
 		// Nodo Emisor, OPCIONALES
 		$datos['nomina12']['Emisor']['RegistroPatronal'] = $this->input->post('RegistroPatronal');//'5525665412';
 		$datos['nomina12']['Emisor']['RfcPatronOrigen']  = $this->input->post('rfcEmisor');//'AAA010101AAA';
-		$datos['nomina12']['Emisor']['origenRecursos']    = $this->input->post('origenRecursos');
+		//$datos['nomina12']['Emisor']['origenRecursos']    = $this->input->post('origenRecursos');
 
 		// SUB NODOS OBLIGATORIOS DE NOMINA [Receptor]
 		// Obligatorios de Receptor
@@ -1076,7 +1076,7 @@ public function rnomina($msj='')
 					$datos['nomina12']['Percepciones'][$x]['ImporteExento']  = $this->input->post('per_ie'.$p)==NULL?0:$this->input->post('per_ie'.$p);					
 				}
 			}					
-			
+			 
 		// NODO DEDUCCIONES
 		$datos['nomina12']['Deducciones']['TotalOtrasDeducciones']   = $this->input->post('tot_o_deduc_emp')==NULL?0:$this->input->post('tot_o_deduc_emp');//'2000'; // tot_o_deduc_emp
 		$datos['nomina12']['Deducciones']['TotalImpuestosRetenidos'] = $this->input->post('tot_imp_ret_emp')==NULL?0:$this->input->post('tot_imp_ret_emp');//'1000'; // tot_imp_ret_emp
@@ -1137,8 +1137,12 @@ public function rnomina($msj='')
 												);				
 				$resp = array( "pdf"  => $filename, "dir" => $datos['dir_cfdi'], "vistaprevia"=>"1" );
 		break;	
-		case "timb":					
-				$resp = $contador->Facturar($datos); 						
+		case "timb":
+				$datos['complemento']      = 'nomina12'; 
+				$datos['validacion_local'] = 'NO';
+				log_message('error', 'datos:'.var_export($datos, true));
+				$resp = $contador->Facturar($datos); 	
+				log_message('error', 'resp:'.var_export($resp, true));
 				//$debug_export = var_export($resp, true);
 				if (count($resp['success']) != 0)
 				{												
@@ -1252,7 +1256,7 @@ public function createFilterFacturas($param)
             $data['controlador']     = $param["controlador"];
             $data['numColGrid']      = $param["numColGrid"];
             $data['mensajeConfirm']  = $param["mensajeConfirm"];
-
+ 
             $filtrosTbl = "";
             $filtrosTbl = $filtrosTbl.form_open(base_url().$param["controlador"].'/paginarAX/', array('class' => 'formular sky-form', 'id' => $param["formaId"]));
             $filtrosTbl = $filtrosTbl.'<fieldset><legend id="togfiltrosForm">[<i class="fa fa-plus" id="imgfiltrosForm"> </i>] Filtros de Busqueda </legend>';

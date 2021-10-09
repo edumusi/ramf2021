@@ -999,13 +999,13 @@ try{$this->load->model('md_pedido' );
 			{	
 				$concep = $this->input->post('conSATCodigo'.$x);
 				if($concep != "")	
-					{ 
+					{  
 						$y++;
 						$impConcepto = $this->input->post('conSATsubtot'.$x);						
 
 						$datos['conceptos'][$y]['cantidad']      = $this->input->post('conSATCantidad'.$x);
 						$datos['conceptos'][$y]['unidad']        = $this->input->post('conSATUM'.$x); //'PIEZA';
-						$datos['conceptos'][$y]['ID']            = $this->input->post('conSATID'.$x);//"M7390Z";
+						//$datos['conceptos'][$y]['ID']            = $this->input->post('conSATID'.$x);//"M7390Z";
 						$datos['conceptos'][$y]['descripcion']   = $this->input->post('conSATCargo'.$x);
 						$datos['conceptos'][$y]['valorunitario'] = $this->input->post('conSATValorUni'.$x);//215.51;
 						$datos['conceptos'][$y]['importe']       = $impConcepto;
@@ -1081,9 +1081,7 @@ try{$this->load->model('md_pedido' );
 	}
 	else //REP
 	{
-		$datos['rep']['parcial_rep']    	  = $this->input->post('parcial_rep');	
-		$datos['rep']['fecha_rep']      	  = $this->utils->senniDateFormat( $this->input->post('fecha_rep') );
-		$datos['factura']['folio']            = $datos['id_factura']."-".$datos['rep']['parcial_rep'];	
+		$datos['rep']['parcial_rep']    	  = $this->input->post('parcial_rep');					
 		$datos['factura']['fecha_expedicion'] = date('Y-m-d\TH:i:s', time() - 120);
 		$datos['factura']['subtotal'] 		  = '0';
 		$datos['factura']['total'] 			  = '0';
@@ -1103,7 +1101,11 @@ try{$this->load->model('md_pedido' );
 		$datos['rep']['forma_pago_rep'] = $this->input->post('forma_pago_rep');		
 		$datos['rep']['forma_pago_rep_desc'] = $this->md_sat->traeFormaPagoDesc( $this->input->post('forma_pago_rep') )["Descripcion"];
 		$datos['rep']['facturaTipoCambio'] = $this->input->post('tcSAT');//1;
-		$datos['rep']['fecha_rep']      = $this->utils->senniDateFormat( $this->input->post('fecha_rep') );		
+		$fe_yymmdd = $this->utils->arrayDateFormat( $this->input->post('fecha_rep') ); 
+		$date = new DateTime();	
+		$date->setDate($fe_yymmdd['year'], $fe_yymmdd['month'], $fe_yymmdd['day']);
+		$fecha_rep = $date->format('Y-m-d\TH:i:s');
+		$datos['rep']['fecha_rep']      = $fecha_rep;
 		$datos['rep']['id_pedido']      = $id_pedido;		
 
 		// Conceptos (valores por default)
@@ -1115,10 +1117,12 @@ try{$this->load->model('md_pedido' );
 		$datos['conceptos'][0]['importe'] 		= '0.0';
 
 		// Complemento de Pagos 1.0
-		$datos['pagos10']['Pagos'][0]['FechaPago']	  = $this->utils->dateExpFactura($datos['rep']['fecha_rep']);
-		$datos['pagos10']['Pagos'][0]['FormaDePagoP'] = $datos['rep']['fecha_rep'];
+		$datos['pagos10']['Pagos'][0]['FechaPago']	  = $datos['rep']['fecha_rep'];
+		$datos['pagos10']['Pagos'][0]['FormaDePagoP'] = $datos['rep']['forma_pago_rep'];
 		$datos['pagos10']['Pagos'][0]['MonedaP']	  = $datos['rep']['moneda_rep'] ;
-		$datos['pagos10']['Pagos'][0]['Monto']		  = $datos['rep']['monto_rep'];
+		if ( $datos['rep']['moneda_rep'] =="USD")
+		   { $datos['pagos10']['Pagos'][0]['TipoCambioP']  = $datos['rep']['tc_rep'] ; }
+		$datos['pagos10']['Pagos'][0]['Monto']		  = $this->utils->toFixed( floatval( $datos['rep']['monto_rep'] ), 2 );
 
 		$datos['pagos10']['Pagos'][0]['NumOperacion'] 	 = $this->input->post('NumOperacion');
 		$datos['pagos10']['Pagos'][0]['RfcEmisorCtaOrd'] = $this->input->post('RfcEmisorCtaOrd');
@@ -1129,23 +1133,32 @@ try{$this->load->model('md_pedido' );
 		$id_factura = $this->input->post('facturaPedido');
 		if( $portal == NULL)
           {			
-			$factura    = $this->md_sat->traeFacturaByIdFactura($id_factura);
-
+			$factura    = $this->md_sat->traeFacturaByIdFactura($id_factura);			
+			$datos['id_factura'] = $factura['id_factura'];
 			$datos['receptor']['rfc']    = $factura['rfc'];
-			$datos['receptor']['nombre'] = $factura['nombre'];
-	
+			$datos['receptor']['nombre'] = $factura['nombre']; 
+			$datos['factura']['folio']   = ($factura['folio']=="-1"?$factura['id_factura']:$factura['folio']) ."-".$datos['rep']['parcial_rep'];
+			$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["Folio"] 			 = ($factura['folio']=="-1"?$factura['id_factura']:$factura['folio']);
+ 
 			$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["IdDocumento"] 	 = $factura['uuid'];
-			$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["Serie"] 			 = $factura['serie'];
-			$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["Folio"] 			 = $factura['folio'];			
+			$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["Serie"] 			 = $factura['serie'];			
 			$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["MonedaDR"] 		 = $factura['moneda'];
+		
+			if ( $datos['rep']['moneda_rep'] != $factura['moneda'])
+			   { $datos['pagos10']['Pagos'][0]['DoctoRelacionado'][0]['TipoCambioDR'] = $factura['tipocambio'];}
 			$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["MetodoDePagoDR"]   = $factura['metodo_pago'];
 		  }
-		else
+		else 
 			{
+				$datos['id_factura'] = $this->input->post('id_facturaREP');
+				$datos['factura']['folio'] = ($this->input->post('id_pedidoREP')=="-1"?$this->input->post('id_factura'):$this->input->post('id_pedidoREP')) ."-".$datos['rep']['parcial_rep'];
+				$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["Folio"] 			 = ($this->input->post('id_pedidoREP')=="-1"?$this->input->post('id_factura'):$this->input->post('id_pedidoREP')); 
 				$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["IdDocumento"] 	 = $this->input->post('uuidREP');
-				$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["Serie"] 			 = $this->input->post('serieREP');
-				$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["Folio"] 			 = $this->input->post('id_pedidoREP');				
+				$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["Serie"] 			 = $this->input->post('serieREP');				
 				$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["MonedaDR"] 		 = $this->input->post('monedaREP');
+
+				if ( $datos['rep']['moneda_rep'] != $this->input->post('monedaREP'))
+			   	   { $datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["TipoCambioDR"] 	 = $this->input->post('tipocambioREP'); }
 				$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["MetodoDePagoDR"]   = $this->input->post('metodo_pagoREP');
 				
 				$datos['receptor']['rfc']    = $this->input->post('rfcReceptorREP');
@@ -1153,9 +1166,9 @@ try{$this->load->model('md_pedido' );
 			}
 
 	    $datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["NumParcialidad"]   = $datos['rep']['parcial_rep'];
-	    $datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["ImpSaldoAnt"]      = $datos['rep']['monto_rep'] + $this->input->post('si'.$id_factura);
-	    $datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["ImpPagado"] 		 = $datos['rep']['monto_rep'];
-	    $datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["ImpSaldoInsoluto"] = $this->input->post('si'.$id_factura);		
+	    $datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["ImpSaldoAnt"]      = $this->utils->toFixed( floatval($datos['rep']['monto_rep'] + $this->input->post('si'.$id_factura) ) , 2);
+	    $datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["ImpPagado"] 		 = $this->utils->toFixed( floatval($datos['rep']['monto_rep'] ) , 2);
+	    $datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["ImpSaldoInsoluto"] = $this->utils->toFixed( floatval($this->input->post('si'.$id_factura) ) , 2);		
 	}
 		
 	$datos['factPDF']['emailReceptor'] = $this->input->post('emailReceptor');
@@ -1165,6 +1178,8 @@ try{$this->load->model('md_pedido' );
 	
 	$filename = $datos['factura']['tipocomprobante']."_".$datos['factura']['serie']."_".$datos['factura']['folio'].".pdf";
 	$xmlname  = $datos['factura']['tipocomprobante']."_".$datos['factura']['serie']."_".$datos['factura']['folio']."_cfdi3_3.xml"; 
+	// Ruta del XML Timbrado
+	$datos['cfdi'] = $datos['dir_cfdi'] . $xmlname;
 
 	switch ($action) 
 	{
@@ -1187,12 +1202,7 @@ try{$this->load->model('md_pedido' );
 									  );
 			$resp = array( "pdf"  => $filename, "dir" => $datos['dir_cfdi'], "vistaprevia"=>"1", "id_factura"=>$datos['id_factura'] );
 	 break;	
-	 case "timbrar":			
-			// Ruta del XML Timbrado
-			$datos['cfdi'] = $datos['dir_cfdi'] . $xmlname; 			
-log_message('error', 'conceptos:'.var_export($datos['conceptos'], true));
-log_message('error', 'impuestos:'.var_export($datos['impuestos'], true));
-log_message('error', 'VER:'.var_export($datos, true));
+	 case "timbrar":						 			
 			if (PROD_FAC == 'NO')
 			{
 				// Datos del Emisor
@@ -1245,6 +1255,8 @@ log_message('error', 'VER:'.var_export($datos, true));
 				$resp['success']['folio'] 	   = $datos['factura']['folio'];
 				$resp['success']['ImpSaldoInsoluto'] = $datos['factura']['total'];
 				$resp['datos'] = $datos;
+				$resp['id_factura']=$datos['id_factura'];
+				$resp['factura']['total'] = $datos['factura']['total'] ;
 			}					
 	 break;			
 	 case "vp_rep":
@@ -1268,7 +1280,11 @@ log_message('error', 'VER:'.var_export($datos, true));
 					// Datos del Emisor
 					$datos['emisor']['rfc'] = 'XIA190128J61'; //RFC DE PRUEBA
 					$datos['emisor']['nombre'] = 'ACCEM SERVICIOS EMPRESARIALES SC';  // EMPRESA DE PRUEBA
-				}
+				}			
+
+			// SE ESPECIFICA EL COMPLEMENTO
+			$datos['complemento'] 	   = 'pagos10';
+			$datos['validacion_local'] = 'NO';
 log_message('error', 'datos:'.var_export($datos, true));
 			$resp = $contador->Facturar($datos); 		
 log_message('error', 'resp:'.var_export($resp, true));
@@ -1297,8 +1313,9 @@ log_message('error', 'resp:'.var_export($resp, true));
 			$resp = array('sucess' => NULL );
 				if( $portal == NULL)
                     {
-						$resp['factura']   = $datos['factura'];
-						$resp['id_factura']= $datos['id_factura'];
+						$resp['factura']   = $datos['factura'];						
+						log_message('error', 'resp:'.$resp['id_factura'] );
+						log_message('error', 'datos:'.$datos['id_factura'] );						
 						$this->md_sat->insert_rep_timbrada($datos);
 						$this->md_sat->actualizaFactura($datos['id_factura'], array('saldo_insoluto'=>$datos["pagos10"]["Pagos"][0]["DoctoRelacionado"][0]["ImpSaldoInsoluto"],'num_parcialidades' => $datos['rep']['parcial_rep']) );
 						$this->md_pedido->insert_pedido_adjunto( array('adjunto'=>$datos['dir_cfdi'] . $filename,'SEGURIDAD'=>"103",'desc_adjunto'=>"REP ".$filename,'id_pedido'=>$datos['rep']['id_pedido'],'tipo'=>'REP', "uuid"=>$datos['factura']['uuid'],"filename"=>$filename ) );
@@ -1423,7 +1440,7 @@ try{$this->load->model('md_pedido' );
 
 					$datos['conceptos'][$y]['cantidad']      = $this->input->post('conSATCantidad'.$x);
 					$datos['conceptos'][$y]['unidad']        = $this->input->post('conSATUM'.$x); //'PIEZA';
-					$datos['conceptos'][$y]['ID']            = $this->input->post('conSATID'.$x);//"M7390Z";
+					//$datos['conceptos'][$y]['ID']            = $this->input->post('conSATID'.$x);//"M7390Z";
 					$datos['conceptos'][$y]['descripcion']   = $this->input->post('conSATCargo'.$x);
 					$datos['conceptos'][$y]['valorunitario'] = $this->input->post('conSATValorUni'.$x);//215.51;
 					$datos['conceptos'][$y]['importe']       = $impConcepto;

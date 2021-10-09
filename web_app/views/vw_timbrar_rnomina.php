@@ -183,8 +183,7 @@ echo '  <div class="row">
                 <td width="18%" style="text-align:left">'.form_input(array('class'      => 'timb text-input ', 
                                                                             'size'      => '10', 
                                                                             'name'      => 'cve_entidad_emp', 
-                                                                            'id'        => 'cve_entidad_emp',
-                                                                            'readonly'  => 'readonly',
+                                                                            'id'        => 'cve_entidad_emp',                                                                             
                                                                             'maxlength' => '50'))
                                                                             .'</td>
                                                                         </tr>

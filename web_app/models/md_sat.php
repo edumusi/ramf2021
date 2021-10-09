@@ -23,7 +23,7 @@ class Md_sat extends CI_Model {
             return array();        
     } 
     
-
+ 
     public function traeFacturaByIdFactura($id_factura)
     {
 
@@ -552,7 +552,7 @@ class Md_sat extends CI_Model {
 
     public function insert_rep_timbrada($datos)
     {
-        try { 
+        try {  
         $data = array(
         'id_factura'    => $datos['id_factura'],
         'id_pedido'     => $datos['rep']['id_pedido'],
@@ -575,6 +575,7 @@ class Md_sat extends CI_Model {
         'uuid'             => $datos['factura']['uuid'],
         'fecha_timbrado'   => $datos['factura']['fecha_timbrado']
         );
+        log_message('error', 'data:'.var_export($data, true));
         $this->db->insert('factura_pagos',$data);
         } catch (Exception $e) {log_message('error', 'factura_pagos Excepción:'.$e->getMessage()); }	
     }

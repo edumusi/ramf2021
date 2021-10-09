@@ -38,7 +38,7 @@ class Utils
                     { return NULL; }                    
                 else
                     {   $paramDateStr = DateTime::createFromFormat('j#n#Y', $paramDate);
-                        return $paramDateStr ->format('Y/m/j');                         
+                        return $paramDateStr ->format('Y/m/d');                         
                     }                    
 	}
 
@@ -266,7 +266,7 @@ class Utils
 							'underline'=>PHPWord_Style_Font::UNDERLINE_SINGLE);
 		$fontStyleCal = array('name'=>'Calibri','size'=>11);	
 		$fontStyleCalNeg = array('name'=>'Calibri','size'=>11,'bold'=>true);	
-		$styleCell = array('valign'=>'center');																														
+		$styleCell = array('valign'=>'center');						 																								
 	//		$linestyle = array('weight' => 1,'width' => 100,'height' => 0,'color' => 635552);
 	//		$section->addLine($lineStyle);
 		$section->addTextBreak(2);
