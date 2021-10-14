@@ -59,6 +59,7 @@ public function editar($num_guia=0)
 {
 try{
 	$this->validaSS();
+	date_default_timezone_set('America/Mexico_City');
 	$this->load->model('md_proveedor');
 	$this->load->model('md_cotizador'); 
 	$this->load->helper('date');
@@ -80,6 +81,7 @@ try{
 	$data['status']              = $this -> md_catalogo -> poblarSelect("status");
 	$data['segdoc']              = $this -> md_catalogo -> poblarSelect("segdoc");
 	$data['tipos_servicio']      = $this -> md_catalogo -> poblarSelect("tipo_servicio");
+	$data['tipos_contenedor']    = $this -> md_catalogo -> poblarSelect("tipo_contenedor");
 	$data['clientes']            = $this -> md_cliente  -> poblarSelect();
 	$data['cotizaciones']        = $this -> md_cotizador -> poblarSelect();
 	$data['terminosINCO']        = $this -> md_catalogo  -> poblarSelect("terminos");
@@ -112,7 +114,7 @@ try{
 public function nuevo()
 {	
 	$this->validaSS();
-	
+	date_default_timezone_set('America/Mexico_City');
 	$this->load->helper('date');
 	$this->load->model('md_proveedor');
 	$this->load->model('md_cotizador'); 
@@ -134,12 +136,13 @@ public function nuevo()
 	$data['status']              = $this -> md_catalogo  -> poblarSelect("status");
 	$data['segdoc']              = $this -> md_catalogo  -> poblarSelect("segdoc");
 	$data['tipos_servicio']      = $this -> md_catalogo  -> poblarSelect("tipo_servicio");
+	$data['tipos_contenedor']    = $this -> md_catalogo -> poblarSelect("tipo_contenedor");
 	$data['clientes'] 	     	 = $this -> md_cliente   -> poblarSelect();
 	$data['cotizaciones']        = $this -> md_cotizador -> poblarSelect();
 	$data['terminosINCO']        = $this -> md_catalogo  -> poblarSelect("terminos");
 	$data['id_pedido']           = now();    
 	$data['accion']		     	 = "N";
-    $data['pedido']              = array('encabezado' => array(array('correo'=>NULL, 'rfc'=>NULL, 'status'=>NULL, 'carrier'=>NULL, 'folio_factura'=>NULL, 'adjunto_factura'=>NULL, 'fecha_alta'=>NULL, 'fecha_modificacion'=>NULL, 'ins_envio'=>NULL, 'ins_booking'=>NULL, 'num_booking'=>NULL, 'num_contenedor'=>1, 'num_mbl'=>NULL, 'adjunto_mbl'=>NULL, 'num_hbl'=>NULL, 'adjunto_hbl'=>NULL, 'vessel_voyage'=>NULL, 'shipper'=>NULL, 'revalidar_aa'=>NULL, 'num_contenedor'=>NULL, 'carta_garantia'=>47, 'carta_no'=>NULL, 'monto_carta_no'=>NULL, 'adjunto_le'=>NULL, 'adjunto_facturaP'=>NULL, 'adjunto_poliza'=>NULL, 'adjunto_cartaporte'=>NULL, 'profit_origen'=>NULL, 'profit'=>NULL, 'comision_ventas'=>NULL, 'comision_operaciones'=>NULL, 'id_carrier'=>NULL, 'id_coti'=>NULL, 'moneda'=>NULL, 'tipo_cambio'=>NULL, 'tipo_embarque'=>NULL, 'id_cg'=>NULL,'id_carta_no'=>NULL,'costo_tot'=>NULL,'venta_tot'=>NULL,'pol'=>NULL,'pod1'=>NULL,'pod2'=>NULL,'etd'=>NULL,'eta'=>NULL,'flagHeaderSaved'=>0,'status_track'=>NULL)), 
+    $data['pedido']              = array('encabezado' => array(array('correo'=>NULL, 'rfc'=>NULL, 'status'=>NULL, 'carrier'=>NULL, 'folio_factura'=>NULL, 'adjunto_factura'=>NULL, 'fecha_alta'=>NULL, 'fecha_modificacion'=>NULL, 'ins_envio'=>NULL, 'ins_booking'=>NULL, 'num_booking'=>NULL, 'num_contenedor'=>1, 'num_mbl'=>NULL, 'adjunto_mbl'=>NULL, 'num_hbl'=>NULL, 'adjunto_hbl'=>NULL, 'vessel_voyage'=>NULL, 'shipper'=>NULL, 'revalidar_aa'=>NULL, 'num_contenedor'=>NULL, 'carta_garantia'=>47, 'carta_no'=>NULL, 'monto_carta_no'=>NULL, 'adjunto_le'=>NULL, 'adjunto_facturaP'=>NULL, 'adjunto_poliza'=>NULL, 'adjunto_cartaporte'=>NULL, 'profit_origen'=>NULL, 'profit'=>NULL, 'comision_ventas'=>NULL, 'comision_operaciones'=>NULL, 'id_carrier'=>NULL, 'id_coti'=>NULL, 'moneda'=>NULL, 'tipo_cambio'=>NULL, 'tipo_embarque'=>NULL, 'id_cg'=>NULL,'id_carta_no'=>NULL,'costo_tot'=>NULL,'venta_tot'=>NULL,'pol'=>NULL,'pod1'=>NULL,'pod2'=>NULL,'etd'=>NULL, 'agente_proveedor'=>NULL,'orden_compra'=>NULL, 'referencia_proveedor'=>NULL,'eta'=>NULL,'flagHeaderSaved'=>0,'status_track'=>NULL,'total_costos_mxn'=>NULL, 'total_costos_usd'=>NULL, 'total_ventas_mxn'=>NULL, 'total_ventas_usd'=>NULL)), 
 									 	 'aduana' 	  => array(array('agencia'=>NULL, 'tiempo'=>NULL)) , 
 										 'flete' 	  => array(array('id_flete'=>NULL, 'id_pedido'=>NULL, 'tipo_servicio'=>NULL, 'etd'=>NULL, 'eta'=>NULL, 'verificacion_origen'=>NULL,'id_v_o'=>NULL)) ,
 										 'producto'   => array() ,
@@ -178,7 +181,7 @@ try{
 	$this->load->model('md_seguro');
 	$this->load->model('md_transporte');
 	$this->load->model('md_rastreo');
-			
+
 	$this->load->helper('date');	
 			
 	$this->user 	  = $this->session->userdata('datos_sesion');	
@@ -207,8 +210,7 @@ try{
             $shipper            = $this -> input -> post('shipper');
             $num_booking        = $this -> input -> post('num_booking');            
             $num_mbl            = $this -> input -> post('num_mbl');
-            $num_hbl            = $this -> input -> post('num_hbl');
-            $vessel_voyage      = $this -> input -> post('vessel_voyage');	
+            $num_hbl            = $this -> input -> post('num_hbl');            
             $ins_envio          = $this -> input -> post('ins_envio');
             $ins_booking        = $this -> input -> post('ins_booking');
             $revalidar_aa       = $this -> input -> post('revalidar_aa');
@@ -221,37 +223,47 @@ try{
 			$pod1      			= $this -> input -> post('pod1');            
 			$pod2      			= $this -> input -> post('pod2');    			
 			$status 		    = $this->input->post('status_track');
-
+			$agente_proveedor 	= $this->input->post('agente_proveedor');
+			$orden_compra 		= $this->input->post('orden_compra');
+			$referencia_proveedor = $this->input->post('referencia_proveedor');			
+			
             if($accion == "E")
-              { $this -> md_pedido -> actualizaPedido($id_in,array('status_track'=>$status,'correo' => $correo,'fecha_modificacion' => $fecha_alta,'rfc' => $rfc,'carrier' => $carrier,'shipper' => $shipper,'carta_garantia' => $carta_garantia,'carta_no' => $carta_no,'monto_carta_no'=> $monto_carta_no,'num_booking' => $num_booking,'num_mbl' => $num_mbl,'num_hbl' => $num_hbl,'vessel_voyage' => $vessel_voyage,'ins_envio' => $ins_envio,'ins_booking' => $ins_booking,'revalidar_aa'=> $revalidar_aa,'num_contenedor' => $num_contenedor,'id_coti' => $id_coti,'tipo_embarque'=>$tipo_embarque,'pol'=>$pol,'pod1'=>$pod1,'pod2'=>$pod2, 'etd'=>$etd, 'eta'=>$eta)); } 
+              { $this -> md_pedido -> actualizaPedido($id_in, array('status_track'=>$status,'correo' => $correo,'fecha_modificacion' => $fecha_alta,'rfc' => $rfc,'carrier' => $carrier,'shipper' => $shipper,'carta_garantia' => $carta_garantia,'carta_no' => $carta_no,'monto_carta_no'=> $monto_carta_no,'num_booking' => $num_booking,'num_mbl' => $num_mbl,'num_hbl' => $num_hbl,'ins_envio' => $ins_envio,'ins_booking' => $ins_booking,'revalidar_aa'=> $revalidar_aa,'id_coti' => $id_coti,'tipo_embarque'=>$tipo_embarque,'pol'=>$pol,'pod1'=>$pod1,'pod2'=>$pod2, 'etd'=>$etd, 'eta'=>$eta, 'agente_proveedor'=>$agente_proveedor,'orden_compra'=>$orden_compra, 'referencia_proveedor'=>$referencia_proveedor)); } 
             else
-              { $this -> md_pedido -> insertaPedido(array('id_pedido'=> $id_in,'status_track'=>$status,'correo' => $correo,'fecha_alta' => $fecha_alta,'rfc' => $rfc,'carrier' => $carrier,'shipper' => $shipper,'carta_garantia' => $carta_garantia,'carta_no' => $carta_no,'monto_carta_no'=> $monto_carta_no,'num_booking' => $num_booking,'num_mbl' => $num_mbl,'num_hbl' => $num_hbl,'vessel_voyage' => $vessel_voyage,'ins_envio' => $ins_envio,'ins_booking' => $ins_booking,'revalidar_aa'=> $revalidar_aa,'num_contenedor' => $num_contenedor,'id_coti' => $id_coti,'tipo_embarque'=>$tipo_embarque,'pol'=>$pol,'pod1'=>$pod1,'pod2'=>$pod2, 'etd'=>$etd, 'eta'=>$eta)); } 
+              { $this -> md_pedido -> insertaPedido(array('id_pedido'=> $id_in,'status_track'=>$status,'correo' => $correo,'fecha_alta' => $fecha_alta,'rfc' => $rfc,'carrier' => $carrier,'shipper' => $shipper,'carta_garantia' => $carta_garantia,'carta_no' => $carta_no,'monto_carta_no'=> $monto_carta_no,'num_booking' => $num_booking,'num_mbl' => $num_mbl,'num_hbl' => $num_hbl,'ins_envio' => $ins_envio,'ins_booking' => $ins_booking,'revalidar_aa'=> $revalidar_aa,'id_coti' => $id_coti,'tipo_embarque'=>$tipo_embarque,'pol'=>$pol,'pod1'=>$pod1,'pod2'=>$pod2, 'etd'=>$etd, 'eta'=>$eta, 'agente_proveedor'=>$agente_proveedor,'orden_compra'=>$orden_compra, 'referencia_proveedor'=>$referencia_proveedor )); } 
  
          break;
 		 case "PROD": 
-			$num_contenedor     = $this -> input -> post('num_contenedor');
-			$this -> md_pedido -> actualizaPedido($id_pedido, array('num_contenedor'=> $num_contenedor)); 
+			
+			$vessel_voyage      = $this -> input -> post('vessel_voyage');	
+			$this -> md_pedido -> actualizaPedido($id_pedido, array('vessel_voyage' => $vessel_voyage)); 
 
             $this -> md_producto -> delete_producto($id_pedido);
             $productos = $this -> input -> post('num_prod');
 
             for ($x = 0; $x <= $productos; $x++) 
             {
-                $nombre    = $this -> input -> post('nombre'.$x);
-                $commodity = $this -> input -> post('commodity'.$x);
-                $peso  	   = $this -> input -> post('peso'.$x);
-                $volumen   = $this -> input -> post('volumen'.$x);
+                $nombre    		 = $this->input->post('nombre'.$x);
+				$qty_contenedor  = $this->input->post('qty_contenedor'.$x);
+				$tipo_contenedor = $this->input->post('tipo_contenedor '.$x);
+                $commodity 		 = $this->input->post('commodity'.$x);
+                $peso  	   	     = $this->input->post('peso'.$x);
+                $tipo_servicio   = $this->input->post('tipo_servicio'.$x);
 
                 if($nombre != "")	
-                { $this ->  md_producto -> insert_producto($id_pedido,$nombre,$commodity,$peso,$volumen); }
+                  { $this->md_producto->insert_producto($id_pedido,$nombre,$qty_contenedor,$tipo_contenedor,$commodity,$peso,$tipo_servicio); }
             }
          break;
          case "FLET": 
 			
             $this -> md_flete -> delete_flete($id_pedido);
-			$verificacion_origen = $this -> input -> post('verificacion_origen');
+			$verificacion_origen = $this -> input -> post('verificacion_origen');			
 			$moneda              = $this -> input -> post('moneda');
             $tipo_cambio         = $this -> input -> post('tipo_cambio');
+			$total_costos_mxn 	 = $this->input->post('total_costos_mxn');
+			$total_costos_usd 	 = $this->input->post('total_costos_usd');
+			$total_ventas_mxn 	 = $this->input->post('total_ventas_mxn');
+			$total_ventas_usd 	 = $this->input->post('total_ventas_usd');
             $tipos_servicio      = $this -> md_catalogo -> poblarServicios("tipo_servicio","TS");
             $cargos              = array();
             $cargosIVA           = array();
@@ -260,14 +272,15 @@ try{
 			
             $this -> md_pedido -> delete_pedido_termino($id_pedido);
             $this -> md_pedido -> delete_pedido_cargo($id_pedido);
-            $this -> md_pedido -> delete_pedido_concepto($id_pedido);			
-			$this -> md_pedido -> actualizaPedido($id_in,array('moneda'=> $moneda,'tipo_cambio'=>$tipo_cambio)); 
-            //while (list($llave, $valor) = each($tipos_servicio)) 
+            $this -> md_pedido -> delete_pedido_concepto($id_pedido);	
+
+			$this -> md_pedido -> actualizaPedido($id_in,array('moneda'=> $moneda,'tipo_cambio'=>$tipo_cambio, 'total_costos_mxn'=>$total_costos_mxn, 'total_costos_usd'=>$total_costos_usd, 'total_ventas_mxn'=>$total_ventas_mxn, 'total_ventas_usd'=>$total_ventas_usd)); 
+			
 			foreach($tipos_servicio as $llave => $valor)
             {
                 if ($llave != 0 )
                 { 
-                    $numconceptos = $this -> input -> post($llave.'numconceptos');			
+                    $numconceptos = $this -> input -> post($llave.'numconceptos');								
                     for ($x = 0; $x <= $numconceptos; $x++) 
                     {
                         $concep      = $this -> input -> post($llave.'concep'.$x);
@@ -276,38 +289,41 @@ try{
                         { $this ->  md_pedido -> insert_pedido_concepto($concep,$concep_dato,$llave,$id_pedido);}
                     }
 
-                    $numcargos = $this -> input -> post($llave.'numcargos');			
+                    $numcargos = $this -> input -> post($llave.'numcargos');						
                     for ($x = 0; $x <= $numcargos; $x++) 
                     {
                         $cargo 	 = $this -> input -> post($llave.'cargoV'.$x);
                         $importe = $this -> input -> post($llave.'importeV'.$x);
                         $unidad  = $this -> input -> post($llave.'unidadV'.$x);
-                        $iva 	 = $this -> input -> post($llave.'ivaV'.$x);
-						$status  = $this -> input -> post($llave.'statusV'.$x)==""?NULL:$this -> input -> post($llave.'statusV'.$x);
+                        $iva 	 = $this -> input -> post($llave.'ivaV'.$x);						
+						$status  = $this -> input -> post($llave.'statusV'.$x)==""?NULL:$this -> input -> post($llave.'statusV'.$x);						
                         if ($cargo != "")
                         {
 							$subtotal = $importe * $unidad;
-							$this->md_pedido->insert_pedido_cargo($cargo, $importe, $unidad, $subtotal, "VENTA", $iva, $llave, $status, $id_pedido);
+							$this->md_pedido->insert_pedido_cargo($cargo, $importe, $unidad, $subtotal, NULL, NULL, "VENTA", $iva, $llave, $status, $id_pedido);
                             if($iva == "1")
                                 { $cargosIVA[] = array('servicio' => $valor,'cargo' => $cargo,'importe' => $importe); }
                             else
                                 { $cargos[]    = array('servicio' => $valor,'cargo' => $cargo,'importe' => $importe); }
                         }
 					}
-
-					$numcostos = $this -> input -> post($llave.'numcostos');			
+					
+					$numcostos = $this -> input -> post($llave.'numcostos');
                     for ($x = 0; $x <= $numcostos; $x++) 
                     {
                         $cargo 	 = $this -> input -> post($llave.'cargoC'.$x);
                         $importe = $this -> input -> post($llave.'importeC'.$x);
                         $unidad  = $this -> input -> post($llave.'unidadC'.$x);
                         $iva 	 = $this -> input -> post($llave.'ivaC'.$x);
-						
+						$monedaC = $this -> input -> post($llave.'monedaC'.$x);
+						$tipoC   = $this -> input -> post($llave.'tipo_cambioC'.$x);
+						log_message('error', 'monedaC: '.$monedaC);
+						log_message('error', 'tipoC: '.$tipoC);
                         if ($cargo != "")
                         {
-							$subtotal = $importe * $unidad;							
-							$this->md_pedido->insert_pedido_cargo($cargo, $importe, $unidad, $subtotal, "COSTO", $iva, $llave, NULL, $id_pedido);
-							
+							$subtotal = $importe * $unidad;
+							$this->md_pedido->insert_pedido_cargo($cargo, $importe, $unidad, $subtotal, $monedaC, $tipoC, "COSTO", $iva, $llave, NULL, $id_pedido);
+
                             if($iva == "1")
                                 { $cargosIVA[] = array('servicio' => $valor,'cargo' => $cargo,'importe' => $importe); }
                             else
@@ -397,13 +413,7 @@ try{
 				}
             }            
             $this -> md_pedido -> actualizaPedido($id_in,array('status_track'=>$status,'fecha_modificacion' => $fecha_alta));
-            
-            if ($mandarPrefactura == TRUE)
-            {
-                $encabezado    = array();
-                $encabezado[0] = array('id_pedido' => $id_pedido,'vessel_voyage' => $vessel_voyage, 'mbl' => $num_mbl,'hbl' => $num_hbl,'moneda'=> $moneda);
-                $this -> mandaPrefactura($rfc,$correo,$encabezado,$fletes,$terminos,$cargos,$cargosIVA);
-            }
+          
 
             if ($mandarRetro == TRUE)
             {
@@ -435,121 +445,6 @@ private function guardaProfitAX($id_in,$forma)
  } catch (Exception $e) {echo ' guardar Excepción: ',  $e, "\n";}
 }
 
-public function generarPrefacturaPDFAX()
-{
- try
- {
-	$this->load->model('md_flete');	
-	$this->load->model('md_seguro');
-	$this->load->model('md_transporte');
-	$this->load->model('md_cliente');
-	$this->load->model('md_catalogo');
-	$this->load->model('md_pedido');
-	
-	$id_pedido     = $this -> input -> post('id_pedidoFLET');	
-	$num_mbl       = $this -> input -> post('num_mblFLET');
-	$num_hbl       = $this -> input -> post('num_hblFLET');
-	$vessel_voyage = $this -> input -> post('vessel_voyageFLET');	
-	$moneda	       = $this -> input -> post('monedaFLET');
-	$rfc           = $this -> input -> post('rfcFLET');
-	$encabezado    = array();
-	$cargos        = array();
-	$cargosIVA     = array();
-	$terminos      = array();
-	$fletes        = array();	
-	$encabezado[0] = array('id_pedido'  	=> $id_pedido,
-                                'vessel_voyage' => $vessel_voyage,							   
-                                'mbl'  		=> $num_mbl,
-                                'hbl'  		=> $num_hbl,
-                                'moneda'  	=> $moneda
-                               );
-	$this->user 	= $this->session->userdata('datos_sesion');		
-	$correo 	    = element('correo', $this->user['0']); 						   
-						   
-	$cliente    = $this->md_cliente->traeDetalleClientePorEn($rfc,"clientes","c","*");		
-						
-	$datosSL    = $this->md_pedido->traeDatosSL();
-	$cuentasSL  = $this->md_pedido->traeCuentasSL($datosSL[0]['rfc']);
-		
-	$tipos_servicio    = $this -> md_catalogo -> poblarServicios("tipo_servicio","TS");
-	
-	//while (list($llave, $valor) = each($tipos_servicio)) 
-	foreach($tipos_servicio as $llave => $valor)
-	{
-		if ($llave != 0 )
-		{
-			$etd = $this -> input -> post($llave.'etd');
-			$eta = $this -> input -> post($llave.'eta');
-			if (!empty($etd) & !empty($eta))							
-                           { $fletes[] = array('servicio'    => $valor,
-                                                'id_servicio' => $llave,
-                                                'etd'         => $this -> input -> post($llave.'etd'),
-                                                'eta'         => $this -> input -> post($llave.'eta')
-                                               );			 							
-                           }
-						
-			$numcargos = $this -> input -> post($llave.'numcargos');			
-			for ($x = 0; $x <= $numcargos; $x++) 
-			{
-				$cargo 	 = $this -> input -> post($llave.'cargo'.$x);
-				$importe = $this -> input -> post($llave.'importe'.$x);
-				$costo 	 = $this -> input -> post($llave.'costo'.$x);
-				$iva 	 = $this -> input -> post($llave.'iva'.$x);			 
-
-				if ($cargo != "")				
-					if($iva == "1")
-						$cargosIVA[] = array('servicio' => $valor,
-                                                                     'cargo'    => $cargo,
-                                                                     'importe'  => $importe
-                                                                    );
-					else
-						$cargos[] = array('servicio' => $valor,
-                                                                  'cargo'    => $cargo,
-								  'importe'  => $importe
-                                                                  );				
-			}
-
-			$numterminos  = $this -> input -> post($llave.'numterminos');			
-			for ($x = 0; $x <= $numterminos; $x++) 
-			{
-				$termino 	  = $this -> input -> post($llave.'termino'.$x);
-				if($x == 0)
-					$termino_dato = $this->md_catalogo->traeDescOpcion($this -> input -> post($llave.'termino_dato'.$x));
-				else
-					$termino_dato = $this -> input -> post($llave.'termino_dato'.$x);
-				if ($termino != "")			
-					$terminos[] = array('servicio' 	   => $valor,
-							    'id_servicio'  => $llave,
-                                                            'termino'      => $termino,
-                                                            'termino_dato' => $termino_dato
-							  );				
-			}
-															
-		}
-	}
-
-	$iva   = $this -> input -> post('iva_tt');
-	$venta = $this -> input -> post('venta_tt');
-	if($venta != NULL & $venta > 0)
-		if($iva == "1")
-                    { $cargosIVA[]= array('servicio' => ' ', 'cargo' => 'TRANSPORTE', 'importe' => $venta ); }
-		else
-                    { $cargos[] = array('servicio' => ' ','cargo' => 'TRANSPORTE', 'importe' => $venta ); }
-							 
-	$iva   = $this -> input -> post('iva_s');
-	$venta = $this -> input -> post('venta_s');
-	if($venta != NULL & $venta > 0)
-		if($iva == "1")
-                   { $cargosIVA[] = array('servicio' => ' ', 'cargo'  => 'SEGURO', 'importe'  => $venta); }
-		else
-                   { $cargos[] = array('servicio' => ' ', 'cargo' => 'SEGURO', 'importe' => $venta ); }
-
-	$preFactura = $this->generarPDF_Prefactura($encabezado,$fletes,$terminos,$cargos,$cargosIVA,$cliente,$datosSL,$cuentasSL);						   
-	 
-	 echo json_encode(array("preFactura"   => $preFactura['filename']));
-
- } catch (Exception $e) {json_encode( 'PREFACTURA generarPDFAX Excepción: ',  $e->getMessage());}	
-}
 
 public function downloadPF($filename)
 	{
@@ -920,6 +815,7 @@ try{$this->load->model('md_pedido' );
 
 public function	timbrarAX($id_pedido=0, $action="", $portal=NULL)
 {
+date_default_timezone_set('America/Mexico_City');
 Header('Access-Control-Allow-Origin: *');	
 try{$this->load->model('md_pedido' );
 	$this->load->model('md_cliente');
@@ -1209,8 +1105,9 @@ try{$this->load->model('md_pedido' );
 				$datos['emisor']['rfc'] = 'XIA190128J61'; //RFC DE PRUEBA
 				$datos['emisor']['nombre'] = 'ACCEM SERVICIOS EMPRESARIALES SC';  // EMPRESA DE PRUEBA
 			}
+log_message('error', 'datos:'.var_export($datos, true));
 			$resp = $contador->Facturar($datos); 		
-			//$debug_export = var_export($resp, true);			
+log_message('error', 'resp:'.var_export($resp, true));		
 			if (count($resp['success']) != 0)
 			{				
 				$datos['emisor']['nombre_fiscal'] = $dbFiscal['nombre_fiscal'];
@@ -1229,19 +1126,23 @@ try{$this->load->model('md_pedido' );
                     {
 						$templateFactura = "vw_pdf_prefactura";
 						$resp['factura'] = $datos['factura'];
+						$this->generatePDF_Factura( $datos['dir_cfdi'] . $filename
+													, array("f" => $datos, "r" => array("archivo_png"=>$resp['success']['archivo_png'], "representacion_impresa_certificado_no"=>$datos['factura']['representacion_impresa_certificado_no'],"representacion_impresa_sello"=>$datos['factura']['representacion_impresa_sello'],"representacion_impresa_selloSAT"=>$datos['factura']["representacion_impresa_selloSAT"],"representacion_impresa_cadena"=>$datos['factura']["representacion_impresa_cadena"],"representacion_impresa_certificadoSAT"=>$datos['factura']['representacion_impresa_certificadoSAT'],"folio_fiscal"=>$datos['factura']["uuid"],"fecha_timbrado"=>$datos['factura']["fecha_timbrado"],"uuid"=>$datos['factura']["uuid"] )) 
+													, $templateFactura
+													); 
+
 						$this->md_sat->insert_factura_timbrada($datos);
 						$this->md_pedido->insert_pedido_adjunto( array('adjunto'=>$datos['dir_cfdi'] . $filename, 'SEGURIDAD'=>"103",'desc_adjunto'=>"FACTURA RAMF " . $filename, 'id_pedido'=>$datos['id_pedido'],'tipo'=>'FACTURA', 'uuid'=>$datos['factura']['uuid'], 'filename'=>$filename ) );
 				    }
 				else{						
 						
 						$templateFactura = "vw_pdf_prefactura_SENNI";
+						$this->generatePDF_Factura( $datos['dir_cfdi'] . $filename
+													, array("f" => $datos, "r" => array("archivo_png"=>$resp['success']['archivo_png'], "representacion_impresa_certificado_no"=>$datos['factura']['representacion_impresa_certificado_no'],"representacion_impresa_sello"=>$datos['factura']['representacion_impresa_sello'],"representacion_impresa_selloSAT"=>$datos['factura']["representacion_impresa_selloSAT"],"representacion_impresa_cadena"=>$datos['factura']["representacion_impresa_cadena"],"representacion_impresa_certificadoSAT"=>$datos['factura']['representacion_impresa_certificadoSAT'],"folio_fiscal"=>$datos['factura']["uuid"],"fecha_timbrado"=>$datos['factura']["fecha_timbrado"],"uuid"=>$datos['factura']["uuid"] )) 
+													, $templateFactura
+													); 
 				    }	  
-
-				$this->generatePDF_Factura( $datos['dir_cfdi'] . $filename
-										, array("f" => $datos, "r" => array("archivo_png"=>$resp['success']['archivo_png'], "representacion_impresa_certificado_no"=>$datos['factura']['representacion_impresa_certificado_no'],"representacion_impresa_sello"=>$datos['factura']['representacion_impresa_sello'],"representacion_impresa_selloSAT"=>$datos['factura']["representacion_impresa_selloSAT"],"representacion_impresa_cadena"=>$datos['factura']["representacion_impresa_cadena"],"representacion_impresa_certificadoSAT"=>$datos['factura']['representacion_impresa_certificadoSAT'],"folio_fiscal"=>$datos['factura']["uuid"],"fecha_timbrado"=>$datos['factura']["fecha_timbrado"],"uuid"=>$datos['factura']["uuid"] )) 
-										, $templateFactura
-										); 
-										
+					
 				$resp = array('sucess' => NULL );
 				$resp['pathFile'] = CONTROLLER_FAC.$datos['dir_cfdi'];															
 				$resp['portal']   = $portal;
@@ -1285,9 +1186,9 @@ try{$this->load->model('md_pedido' );
 			// SE ESPECIFICA EL COMPLEMENTO
 			$datos['complemento'] 	   = 'pagos10';
 			$datos['validacion_local'] = 'NO';
-log_message('error', 'datos:'.var_export($datos, true));
+log_message('error', 'datos REP:'.var_export($datos, true));
 			$resp = $contador->Facturar($datos); 		
-log_message('error', 'resp:'.var_export($resp, true));
+log_message('error', 'resp REP:'.var_export($resp, true));
 			if (count($resp['success']) != 0)
 			{
 			$filename = "REP_".$datos['factura']['folio'].".pdf";
@@ -1489,8 +1390,7 @@ try{$this->load->model('md_pedido' );
 						$datos['pdfconceptos'][$y]['Impuestos']['Traslados'][0]['Importe']    = $ivaConcepto;//34.48;							
 				}
 		}	
-	// Se agregan los Impuestos FACTURA	
-	// Se agregan los Impuestos FACTURA	
+	// Se agregan los Impuestos FACTURA		
 	$indiceTranslados = -1;
 	if($flagTasaIVA == TRUE)
 	{
@@ -1551,14 +1451,14 @@ try{$this->load->model('md_pedido' );
 	 case "timbrarcfdirel":			
 			// Ruta del XML Timbrado
 			$datos['cfdi'] = $datos['dir_cfdi'] . $xmlname; 			
-log_message('error', 'VER:'.var_export($datos, true));
 			if (PROD_FAC == 'NO')
 			{   // Datos del Emisor
 				$datos['emisor']['rfc']    = 'XIA190128J61'; //RFC DE PRUEBA
 				$datos['emisor']['nombre'] = 'ACCEM SERVICIOS EMPRESARIALES SC';  // EMPRESA DE PRUEBA
 			}
+log_message('error', 'datos CFDI REL:'.var_export($datos, true));
 			$resp = $contador->Facturar($datos); 		
-			//$debug_export = var_export($resp, true);			
+log_message('error', 'resp CFDI REL:'.var_export($resp, true));	
 			if (count($resp['success']) != 0)
 			{				
 				$datos['emisor']['nombre_fiscal'] = $dbFiscal['nombre_fiscal'];
@@ -1577,17 +1477,22 @@ log_message('error', 'VER:'.var_export($datos, true));
                     {
 						$templateFactura = "vw_pdf_prefactura_cfdi_rel_";
 						$resp['factura'] = $datos['factura'];
+						$this->generatePDF_Factura( $datos['dir_cfdi'] . $filename
+													, array("f" => $datos, "r" => array("archivo_png"=>$resp['success']['archivo_png'], "representacion_impresa_certificado_no"=>$datos['factura']['representacion_impresa_certificado_no'],"representacion_impresa_sello"=>$datos['factura']['representacion_impresa_sello'],"representacion_impresa_selloSAT"=>$datos['factura']["representacion_impresa_selloSAT"],"representacion_impresa_cadena"=>$datos['factura']["representacion_impresa_cadena"],"representacion_impresa_certificadoSAT"=>$datos['factura']['representacion_impresa_certificadoSAT'],"folio_fiscal"=>$datos['factura']["uuid"],"fecha_timbrado"=>$datos['factura']["fecha_timbrado"],"uuid"=>$datos['factura']["uuid"] )) 
+													, $templateFactura
+													);  
+log_message('error', 'VER:'.var_export($datos, true));
 						$this->md_sat->insert_factura_timbrada($datos);
 						$this->md_pedido->insert_pedido_adjunto( array('adjunto'=>$datos['dir_cfdi'] . $filename, 'SEGURIDAD'=>"103",'desc_adjunto'=>"FACTURA RAMF " . $filename, 'id_pedido'=>$datos['id_pedido'],'tipo'=>'FACTURA', 'uuid'=>$datos['factura']['uuid'], 'filename'=>$filename ) );
 				    }
 				else{
 						$templateFactura = "vw_pdf_prefactura_cfdi_rel_SENNI";
+						$this->generatePDF_Factura( $datos['dir_cfdi'] . $filename
+													, array("f" => $datos, "r" => array("archivo_png"=>$resp['success']['archivo_png'], "representacion_impresa_certificado_no"=>$datos['factura']['representacion_impresa_certificado_no'],"representacion_impresa_sello"=>$datos['factura']['representacion_impresa_sello'],"representacion_impresa_selloSAT"=>$datos['factura']["representacion_impresa_selloSAT"],"representacion_impresa_cadena"=>$datos['factura']["representacion_impresa_cadena"],"representacion_impresa_certificadoSAT"=>$datos['factura']['representacion_impresa_certificadoSAT'],"folio_fiscal"=>$datos['factura']["uuid"],"fecha_timbrado"=>$datos['factura']["fecha_timbrado"],"uuid"=>$datos['factura']["uuid"] )) 
+													, $templateFactura
+													); 
 				    }	  
-
-				$this->generatePDF_Factura( $datos['dir_cfdi'] . $filename
-										  , array("f" => $datos, "r" => array("archivo_png"=>$resp['success']['archivo_png'], "representacion_impresa_certificado_no"=>$datos['factura']['representacion_impresa_certificado_no'],"representacion_impresa_sello"=>$datos['factura']['representacion_impresa_sello'],"representacion_impresa_selloSAT"=>$datos['factura']["representacion_impresa_selloSAT"],"representacion_impresa_cadena"=>$datos['factura']["representacion_impresa_cadena"],"representacion_impresa_certificadoSAT"=>$datos['factura']['representacion_impresa_certificadoSAT'],"folio_fiscal"=>$datos['factura']["uuid"],"fecha_timbrado"=>$datos['factura']["fecha_timbrado"],"uuid"=>$datos['factura']["uuid"] )) 
-										  , $templateFactura
-										  ); 
+				
 										
 				$resp = array('sucess' => NULL );
 				$resp['pathFile'] = CONTROLLER_FAC.$datos['dir_cfdi'];															
@@ -1689,7 +1594,7 @@ private function traeDetallePedido($num_guia, $tipos_servicio)
                                                                         p.adjunto_mbl, p.adjunto_hbl, p.adjunto_facturaP, 
                                                                         p.adjunto_le, p.adjunto_factura,p.adjunto_poliza,p.adjunto_cartaporte,
                                                                         p.profit_origen,p.profit,p.costo_tot,p.venta_tot,p.comision_ventas,p.comision_operaciones,
-                                                                        p.id_coti,p.moneda,p.tipo_cambio, p.tipo_embarque, te.opcion_catalogo as te_desc, p.revalidar_aa, p.pol, p.pod1, p.pod2", "DATE_FORMAT(`p`.`eta`,'%d/%m/%Y') as eta, DATE_FORMAT(`p`.`etd`,'%d/%m/%Y') as etd, (1) as flagHeaderSaved");
+                                                                        p.id_coti,p.moneda,p.tipo_cambio, p.tipo_embarque, te.opcion_catalogo as te_desc, p.revalidar_aa, p.pol, p.pod1, p.pod2", "DATE_FORMAT(`p`.`eta`,'%d/%m/%Y') as eta, DATE_FORMAT(`p`.`etd`,'%d/%m/%Y') as etd, agente_proveedor, orden_compra, referencia_proveedor, (1) as flagHeaderSaved, total_costos_mxn, total_costos_usd, total_costos_mxn, total_ventas_usd, total_ventas_mxn");
 		$aduana 	= $this -> md_pedido  -> traeDetallePorEn($num_guia,"aduana","a","*", NULL);
 		$flete 		= $this -> md_flete   -> traeDetallePorEn($num_guia,"flete","f","f.tipo_servicio, 
                                                                                                 cf.opcion_catalogo 

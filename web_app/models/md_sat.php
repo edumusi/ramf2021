@@ -475,9 +475,13 @@ class Md_sat extends CI_Model {
  
     public function insert_factura_timbrada($datos)
     {
+        log_message('error', 'VER I');		
         $this->db->delete('factura_conceptos', array('id_factura' => $datos['id_factura']));
+        log_message('error', 'VER II');		
         $this->db->delete('factura', array('id_factura' => $datos['id_factura']));    
+        log_message('error', 'VER III');		
         $this->db->delete('factura', array('id_pedido' => $datos['id_pedido'], "status" => "VPF"));    
+        log_message('error', 'VER IV');		
 
         $data = array( 
         'id_factura' => $datos['id_factura'],
